@@ -1,0 +1,25 @@
+Hướng dẫn chạy Demo cho Lead Navigator Pro
+
+1. Chạy Backend (API FastAPI):
+- Mở terminal và di chuyển vào thư mục chứa code:
+  cd lead-navigator-pro-demo
+- Cài đặt các thư viện cần thiết:
+  python3 -m pip install -r requirements.txt
+- Di chuyển vào thư mục api:
+  cd api
+- Khởi chạy server FastAPI:
+  uvicorn main:app --reload --host 127.0.0.1 --port 8000
+- API Backend sẽ được phục vụ tại: http://127.0.0.1:8000
+
+2. Chạy Frontend (React/Vite):
+- Mở một terminal mới (giữ terminal chạy API mở) và di chuyển vào thư mục Frontend:
+  cd lead-navigator-pro-demo/lead-navigator-pro-FrontEnd
+- Cài đặt các dependencies bằng npm (hoặc bun):
+  npm install
+  (hoặc bun install)
+- Khởi chạy server web development:
+  npm run dev
+  (hoặc bun run dev)
+- Truy cập vào đường dẫn hiển thị trên terminal (thường là http://localhost:5173) để trải nghiệm giao diện người dùng mô phỏng chấm điểm khách hàng tiềm năng.
+
+Lưu ý: API Backend yêu cầu một số file mô hình .pkl phải có sẵn trong thư mục `api/models/`. Mặc định cấu trúc file đã được đặt đầy đủ.

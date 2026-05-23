@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lead Navigator Pro</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --surface: #ffffff;
+        --text: #172026;
+        --muted: #66717c;
+        --line: #d9dee5;
+        --accent: #0f766e;
+        --accent-strong: #115e59;
+        --warn: #b45309;
+        --good: #166534;
+        --bad: #991b1b;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        background: #ffffff;
+      }
+
+      .bar {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(15, 118, 110, 0.9), rgba(37, 99, 235, 0.82)),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M10 56 L24 42 L38 49 L58 22 L70 30' fill='none' stroke='white' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='42' r='5' fill='white'/%3E%3Ccircle cx='58' cy='22' r='5' fill='white'/%3E%3C/svg%3E");
+        background-size: cover;
+        flex: 0 0 auto;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 21px;
+        line-height: 1.2;
+        letter-spacing: 0;
+      }
+
+      .status {
+        color: var(--muted);
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      section {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .panel-head {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 15px;
+        letter-spacing: 0;
+      }
+
+      form {
+        padding: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 38px;
+        border: 1px solid #cbd5df;
+        border-radius: 6px;
+        padding: 8px 10px;
+        font: inherit;
+        color: var(--text);
+        background: #ffffff;
+      }
+
+      input:focus,
+      select:focus,
+      button:focus {
+        outline: 3px solid rgba(15, 118, 110, 0.18);
+        border-color: var(--accent);
+      }
+
+      .numeric-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      button {
+        min-height: 40px;
+        border: 0;
+        border-radius: 6px;
+        padding: 9px 14px;
+        font: inherit;
+        font-weight: 700;
+        color: #ffffff;
+        background: var(--accent);
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: var(--accent-strong);
+      }
+
+      .ghost {
+        color: var(--accent-strong);
+        background: #e7f3f1;
+      }
+
+      .ghost:hover {
+        background: #d5ebe7;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+      }
+
+      .results {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .model-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .model-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        display: grid;
+        gap: 12px;
+        min-height: 156px;
+      }
+
+      .model-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .model-title strong {
+        font-size: 14px;
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #eef2f7;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .score {
+        font-size: 38px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .score small {
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .decision {
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .converted {
+        color: var(--good);
+      }
+
+      .not-converted {
+        color: var(--bad);
+      }
+
+      .unavailable {
+        color: var(--warn);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .details {
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 560px;
+      }
+
+      th,
+      td {
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        font-size: 13px;
+      }
+
+      th {
+        color: #475569;
+        background: #f8fafc;
+        font-weight: 750;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .reasons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .reason {
+        border: 1px solid #cbd5df;
+        border-radius: 999px;
+        padding: 6px 9px;
+        font-size: 12px;
+        color: #334155;
+        background: #ffffff;
+      }
+
+      .empty {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 880px) {
+        .workspace,
+        .model-grid,
+        .numeric-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .status {
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <h1>Lead Navigator Pro</h1>
+        </div>
+        <div id="status" class="status">Checking models</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="workspace">
+        <section>
+          <div class="panel-head">
+            <h2>Raw Lead Input</h2>
+          </div>
+          <form id="lead-form">
+            <div class="field">
+              <label for="leadOrigin">Lead Origin</label>
+              <select id="leadOrigin" name="leadOrigin"></select>
+            </div>
+            <div class="field">
+              <label for="lastActivity">Last Activity</label>
+              <select id="lastActivity" name="lastActivity"></select>
+            </div>
+            <div class="field">
+              <label for="occupation">Occupation</label>
+              <select id="occupation" name="occupation"></select>
+            </div>
+            <div class="field">
+              <label for="leadProfile">Lead Profile</label>
+              <select id="leadProfile" name="leadProfile"></select>
+            </div>
+            <div class="numeric-grid">
+              <div class="field">
+                <label for="totalVisits">Total Visits</label>
+                <input id="totalVisits" name="totalVisits" type="number" min="0" step="0.1" value="5" />
+              </div>
+              <div class="field">
+                <label for="totalTimeOnSite">Time On Site</label>
+                <input id="totalTimeOnSite" name="totalTimeOnSite" type="number" min="0" step="1" value="674" />
+              </div>
+              <div class="field">
+                <label for="pageViewsPerVisit">Pages Per Visit</label>
+                <input id="pageViewsPerVisit" name="pageViewsPerVisit" type="number" min="0" step="0.1" value="2.5" />
+              </div>
+            </div>
+            <div class="actions">
+              <button type="submit">Predict</button>
+              <button class="ghost" type="button" id="sample">Sample</button>
+            </div>
+          </form>
+        </section>
+
+        <section>
+          <div class="panel-head">
+            <h2>Model Output</h2>
+          </div>
+          <div class="results" id="results">
+            <div class="empty">No prediction yet.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const defaults = {
+        leadOrigin: "API",
+        lastActivity: "Email Opened",
+        occupation: "Unemployed",
+        leadProfile: "Not Specified",
+      };
+
+      const samples = [
+        {
+          leadOrigin: "Lead Add Form",
+          lastActivity: "SMS Sent",
+          occupation: "Working Professional",
+          leadProfile: "Potential Lead",
+          totalVisits: 6,
+          totalTimeOnSite: 1310,
+          pageViewsPerVisit: 4.2,
+        },
+        {
+          leadOrigin: "Landing Page Submission",
+          lastActivity: "Olark Chat Conversation",
+          occupation: "Unemployed",
+          leadProfile: "Not Specified",
+          totalVisits: 2,
+          totalTimeOnSite: 98,
+          pageViewsPerVisit: 1.5,
+        },
+        {
+          leadOrigin: "Quick Add Form",
+          lastActivity: "Had a Phone Conversation",
+          occupation: "Housewife",
+          leadProfile: "Lateral Student",
+          totalVisits: 9,
+          totalTimeOnSite: 910,
+          pageViewsPerVisit: 6,
+        },
+      ];
+
+      async function init() {
+        const [health, metadata] = await Promise.all([
+          fetch("/health").then((response) => response.json()),
+          fetch("/metadata").then((response) => response.json()),
+        ]);
+
+        document.getElementById("status").textContent = [
+          health.models.bestClassifier ? "LightGBM ready" : "LightGBM unavailable",
+          health.models.highProbability ? "Logistic ready" : "Logistic unavailable",
+        ].join(" | ");
+
+        for (const [field, values] of Object.entries(metadata.categoryOptions)) {
+          const select = document.getElementById(field);
+          select.innerHTML = "";
+          for (const value of values) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            if (defaults[field] === value) option.selected = true;
+            select.appendChild(option);
+          }
+        }
+      }
+
+      function formPayload() {
+        const form = new FormData(document.getElementById("lead-form"));
+        return {
+          leadOrigin: form.get("leadOrigin"),
+          lastActivity: form.get("lastActivity"),
+          occupation: form.get("occupation"),
+          leadProfile: form.get("leadProfile"),
+          totalVisits: Number(form.get("totalVisits")),
+          totalTimeOnSite: Number(form.get("totalTimeOnSite")),
+          pageViewsPerVisit: Number(form.get("pageViewsPerVisit")),
+        };
+      }
+
+      function modelCard(result, label) {
+        if (!result.available) {
+          return `
+            <div class="model-card">
+              <div class="model-title">
+                <strong>${label}</strong>
+                <span class="tag">Unavailable</span>
+              </div>
+              <div class="unavailable">${escapeHtml(result.error || "Model not loaded")}</div>
+            </div>
+          `;
+        }
+
+        const state = result.converted ? "Converted" : "Not Converted";
+        const stateClass = result.converted ? "converted" : "not-converted";
+        return `
+          <div class="model-card">
+            <div class="model-title">
+              <strong>${label}</strong>
+              <span class="tag">${result.name}</span>
+            </div>
+            <div class="score">${result.score}<small>%</small></div>
+            <div class="decision ${stateClass}">${state} at threshold ${result.threshold}</div>
+          </div>
+        `;
+      }
+
+      function renderResult(data) {
+        const rows = Object.entries(data.processing.modelFeatures)
+          .map(([feature, value]) => `
+            <tr>
+              <td>${escapeHtml(feature)}</td>
+              <td>${Number(value).toFixed(6)}</td>
+            </tr>
+          `)
+          .join("");
+
+        const mappedRows = Object.entries(data.processing.categories)
+          .map(([feature, info]) => `
+            <tr>
+              <td>${escapeHtml(feature)}</td>
+              <td>${escapeHtml(info.raw)}</td>
+              <td>${escapeHtml(info.mapped)}</td>
+              <td>${info.encoded}</td>
+            </tr>
+          `)
+          .join("");
+
+        document.getElementById("results").innerHTML = `
+          <div class="model-grid">
+            ${modelCard(data.models.bestClassifier, "Best Classifier")}
+            ${modelCard(data.models.highProbability, "High Probability")}
+          </div>
+          <div class="reasons">
+            ${data.reasons.map((reason) => `<span class="reason">${escapeHtml(reason)}</span>`).join("")}
+          </div>
+          <div class="details">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Feature</th><th>Model Value</th></tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Category</th><th>Raw</th><th>Mapped</th><th>Encoded</th></tr>
+                </thead>
+                <tbody>${mappedRows}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      document.getElementById("lead-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formPayload()),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          document.getElementById("results").innerHTML = `<div class="unavailable">${escapeHtml(JSON.stringify(data.detail || data))}</div>`;
+          return;
+        }
+        renderResult(data);
+      });
+
+      document.getElementById("sample").addEventListener("click", () => {
+        const sample = samples[Math.floor(Math.random() * samples.length)];
+        for (const [key, value] of Object.entries(sample)) {
+          const input = document.getElementById(key);
+          if (input) input.value = value;
+        }
+      });
+
+      init().catch((error) => {
+        document.getElementById("status").textContent = "API unavailable";
+        document.getElementById("results").innerHTML = `<div class="unavailable">${escapeHtml(error.message)}</div>`;
+      });
+    </script>
+  </body>
+</html>
